@@ -97,7 +97,10 @@
     "allDistancesCompleted": "🎉 Alle distancer gennemført!",
     "remainingDistances": "Resterende distancer",
     "todaysSuggestedDistance": "Dagens foreslåede distance:",
-    "defaultWelcome": "Velkommen til kalenderen. Åbn en låge hver gang du har løbet eller gået mindst den distance, der vises på lågen. Du må gerne åbne flere låger hver dag."
+    "defaultWelcome": "Velkommen til kalenderen. Åbn en låge hver gang du har løbet eller gået mindst den distance, der vises på lågen. Du må gerne åbne flere låger hver dag.",
+    "recentClubRuns": "Seneste Klubløb",
+    "loadMore": "Indlæs {count} flere",
+    "loading": "Indlæser..."
   },
   "runLog": {
     "title": "Dag {dayNumber} - {date}",

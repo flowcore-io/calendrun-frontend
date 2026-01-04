@@ -7,7 +7,6 @@
  */
 
 import { backendClient } from "./backend-client";
-import { getChallengeTemplate } from "./challenge-templates";
 import { emitEvent, generateId } from "./flowcore-client";
 
 export interface ChangeLogEntry {
@@ -71,28 +70,6 @@ function apiToRun(data: Record<string, unknown>): RunPerformance {
   };
 }
 
-/**
- * Format a date as ISO date string (yyyy-mm-dd)
- */
-function formatDateISO(dateInput: string | Date): string {
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-  return date.toISOString().split("T")[0] ?? "";
-}
-
-/**
- * Generate month tag from challenge template start date
- * Format: month:YYYY-MM (e.g., "month:2026-01")
- */
-async function getMonthTagForChallenge(templateId: string): Promise<string | null> {
-  const template = await getChallengeTemplate(templateId);
-  if (!template) return null;
-
-  const startDate = new Date(template.startDate);
-  const year = startDate.getFullYear();
-  const month = String(startDate.getMonth() + 1).padStart(2, "0");
-
-  return `month:${year}-${month}`;
-}
 
 /**
  * List all run performances (optionally filtered)
@@ -187,10 +164,6 @@ export async function listRunPerformancesByClubAndMonth(
 
   // Fetch runs for all members in parallel
   const runPromises = userIds.map((userId) => {
-    // Format date range for the month
-    const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-    const endDate = `${year}-${String(month).padStart(2, "0")}-31`;
-
     // Fetch runs for this user and filter by date range
     return listRunPerformances({ userId }).then((runs) =>
       runs.filter((run) => {
@@ -233,7 +206,8 @@ export async function getRunPerformance(
  */
 export async function createRunPerformance(
   run: Omit<RunPerformance, "id" | "createdAt" | "updatedAt">,
-  options?: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _options?: {
     clubInviteTokens?: string[];
     challengeTemplateId?: string;
   }
@@ -394,4 +368,53 @@ export async function deleteRunPerformancesForInstance(instanceId: string): Prom
 export async function hasRunForDay(instanceId: string, runDate: string): Promise<boolean> {
   const runs = await listRunPerformances({ instanceId, runDate });
   return runs.length > 0;
+}
+
+/**
+ * Extended RunPerformance interface for club runs that includes member information
+ */
+export interface ClubRunPerformance extends RunPerformance {
+  memberName?: string;
+  memberRole?: "admin" | "member";
+}
+
+/**
+ * Get runs for a club
+ * Uses the backend API endpoint GET /api/clubs/:id/runs
+ */
+export async function getClubRuns(
+  clubId: string,
+  options?: { limit?: number; status?: "planned" | "completed" | "skipped" }
+): Promise<ClubRunPerformance[]> {
+  try {
+    const params: Record<string, string | undefined> = {};
+    if (options?.limit) {
+      params.limit = options.limit.toString();
+    }
+    if (options?.status) {
+      params.status = options.status;
+    }
+
+    const response = await backendClient.get<{
+      runs: Record<string, unknown>[];
+      count: number;
+      limit: number;
+    }>(`/api/clubs/${clubId}/runs`, params);
+
+    if (!Array.isArray(response.runs)) {
+      return [];
+    }
+
+    return response.runs.map((run) => {
+      const baseRun = apiToRun(run);
+      return {
+        ...baseRun,
+        memberName: (run.memberName as string) || undefined,
+        memberRole: (run.memberRole as "admin" | "member") || undefined,
+      };
+    });
+  } catch (error) {
+    console.error(`Error fetching club runs for club ${clubId}:`, error);
+    return [];
+  }
 }

@@ -97,7 +97,10 @@
     "allDistancesCompleted": "🎉 Allir teinar runnir!",
     "remainingDistances": "Teinar eftir",
     "todaysSuggestedDistance": "Viðmældi teinur í dag:",
-    "defaultWelcome": "Vælkomin til kalendaran. Lat eina lúku upp hvørja ferð tú hevur runnið ella gingið minst tann teinin, sum stendur á lúkuni. Tú mást gjarna lata fleiri lúkur upp hvønn dag."
+    "defaultWelcome": "Vælkomin til kalendaran. Lat eina lúku upp hvørja ferð tú hevur runnið ella gingið minst tann teinin, sum stendur á lúkuni. Tú mást gjarna lata fleiri lúkur upp hvønn dag.",
+    "recentClubRuns": "Nýggjast Felags-túrar",
+    "loadMore": "Vís {count} afturat",
+    "loading": "Innlesur..."
   },
   "runLog": {
     "title": "Dagur {dayNumber} - {date}",

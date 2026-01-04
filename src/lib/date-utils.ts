@@ -28,3 +28,17 @@ export function formatDateTime(dateInput: string | Date | number): string {
   const seconds = String(d.getSeconds()).padStart(2, "0");
   return `${datePart} ${hours}:${minutes}:${seconds}`;
 }
+
+/**
+ * Format a time as hh:mm (no seconds)
+ */
+export function formatTime(dateInput: string | Date | number): string {
+  if (!dateInput) return "";
+  const d = new Date(dateInput);
+  // Check if valid date
+  if (Number.isNaN(d.getTime())) return "";
+
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+}

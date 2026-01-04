@@ -56,7 +56,7 @@ export class BackendClient {
    */
   private buildQueryString(params?: Record<string, string | undefined>): string {
     if (!params) return "";
-    const filtered = Object.entries(params).filter(([_, value]) => value !== undefined);
+    const filtered = Object.entries(params).filter(([, value]) => value !== undefined);
     if (filtered.length === 0) return "";
     return `?${filtered
       .map(([key, value]) => {

@@ -77,7 +77,8 @@ export async function getSubscriptionByUserId(userId: string): Promise<Subscript
  * Get subscription by Stripe subscription ID
  */
 export async function getSubscriptionByStripeId(
-  stripeSubscriptionId: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _stripeSubscriptionId: string
 ): Promise<Subscription | null> {
   // Backend doesn't have this endpoint yet, so we'll need to fetch by userId and filter
   // For now, return null - this will need backend support
@@ -89,7 +90,8 @@ export async function getSubscriptionByStripeId(
  * Get subscription by Stripe customer ID
  */
 export async function getSubscriptionByCustomerId(
-  stripeCustomerId: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _stripeCustomerId: string
 ): Promise<Subscription | null> {
   // Backend doesn't have this endpoint yet
   // TODO: Add backend endpoint for fetching by stripeCustomerId
@@ -189,7 +191,8 @@ export async function deleteSubscription(subscriptionId: string): Promise<void> 
 }
 
 // Legacy function - no longer needed
-function subscriptionToFragmentContent(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _subscriptionToFragmentContent(
   subscription: Omit<Subscription, "id" | "createdAt" | "updatedAt">
 ): {
   title: string;

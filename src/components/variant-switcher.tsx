@@ -204,8 +204,7 @@ export function VariantSwitcher({
                                   date: string;
                                   actualDistance: number;
                                   requiredDistance: number;
-                                },
-                                i: number
+                                }
                               ) => (
                                 <li key={`validation-detail-${detail.dayNumber}-${detail.date}`}>
                                   {t("validationIssue", {

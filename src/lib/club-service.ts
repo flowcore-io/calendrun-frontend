@@ -7,10 +7,10 @@
  */
 
 import { backendClient } from "./backend-client";
-import { listChallengeInstances, listChallengeInstancesByTemplate } from "./challenge-instances";
+import { listChallengeInstancesByTemplate } from "./challenge-instances";
 import { getCurrentMonthChallenge } from "./challenge-templates";
 import { emitEvent, generateId } from "./flowcore-client";
-import { listRunPerformances, listRunPerformancesByClubAndMonth } from "./run-performances";
+import { listRunPerformances } from "./run-performances";
 import { variantToMultiplier } from "./variant-utils";
 
 export interface LocalizedString {

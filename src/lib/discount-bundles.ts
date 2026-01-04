@@ -74,7 +74,8 @@ function formatPrice(amount: number, currency: string): string {
 /**
  * Convert a DiscountBundle to Usable fragment content format
  */
-function bundleToFragmentContent(bundle: Omit<DiscountBundle, "id" | "createdAt" | "updatedAt">): {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _bundleToFragmentContent(bundle: Omit<DiscountBundle, "id" | "createdAt" | "updatedAt">): {
   title: string;
   summary: string;
   content: string;

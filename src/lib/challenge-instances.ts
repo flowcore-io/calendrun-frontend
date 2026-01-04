@@ -159,7 +159,8 @@ export async function getChallengeInstance(instanceId: string): Promise<Challeng
  */
 export async function createChallengeInstance(
   instance: Omit<ChallengeInstance, "id" | "createdAt" | "updatedAt">,
-  templateName: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _templateName: string
 ): Promise<ChallengeInstance> {
   const id = generateId();
   const now = new Date().toISOString();
@@ -192,7 +193,8 @@ export async function updateChallengeInstance(
   updates: Partial<
     Omit<ChallengeInstance, "id" | "templateId" | "userId" | "createdAt" | "updatedAt">
   >,
-  templateName: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _templateName: string
 ): Promise<ChallengeInstance> {
   // First get the existing instance
   const existing = await getChallengeInstance(instanceId);

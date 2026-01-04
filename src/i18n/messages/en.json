@@ -97,7 +97,10 @@
     "allDistancesCompleted": "🎉 All distances completed!",
     "remainingDistances": "Remaining distances",
     "todaysSuggestedDistance": "Today's suggested distance:",
-    "defaultWelcome": "Welcome to the calendar. Open a door every time you have run or walked at least the distance shown on the door. You are welcome to open multiple doors each day."
+    "defaultWelcome": "Welcome to the calendar. Open a door every time you have run or walked at least the distance shown on the door. You are welcome to open multiple doors each day.",
+    "recentClubRuns": "Recent Club Runs",
+    "loadMore": "Load {count} More",
+    "loading": "Loading..."
   },
   "runLog": {
     "title": "Day {dayNumber} - {date}",

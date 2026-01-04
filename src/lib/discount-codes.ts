@@ -60,7 +60,8 @@ function apiToDiscountCode(data: Record<string, unknown>): DiscountCode {
 /**
  * Convert a DiscountCode to Usable fragment content format
  */
-function discountCodeToFragmentContent(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _discountCodeToFragmentContent(
   code: Omit<DiscountCode, "id" | "createdAt" | "updatedAt">
 ): {
   title: string;

@@ -4,6 +4,7 @@ import { ChallengeCalendarWrapper } from "@/components/challenge-calendar-wrappe
 import { ChallengeProgress } from "@/components/challenge-progress";
 import { ChallengeProgressProvider } from "@/components/challenge-progress-context";
 import { ChallengeStateProvider } from "@/components/challenge-state-context";
+import { ClubRecentRuns } from "@/components/club-recent-runs";
 import { JanuaryPromotionWrapper } from "@/components/january-promotion-wrapper";
 import { PWARedirectHandler } from "@/components/pwa-redirect-handler";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { Link } from "@/i18n/routing";
 import { getChallengeInstance, listChallengeInstances } from "@/lib/challenge-instances";
 import { getChallengeTemplate, listChallengeTemplates } from "@/lib/challenge-templates";
 import { type LocalizedString, getUserClubs } from "@/lib/club-service";
-import { listRunPerformances } from "@/lib/run-performances";
+import { getClubRuns, listRunPerformances, type ClubRunPerformance } from "@/lib/run-performances";
 import { getVariantDisplayName, variantToMultiplier } from "@/lib/variant-utils";
 import { resolveTheme } from "@/theme/themes";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -183,6 +184,42 @@ export default async function ChallengeCalendarPage({
         ? tProfile("clubs")
         : tCommon("viewClub");
 
+  // Fetch recent runs from all clubs the user is a member of
+  let recentClubRuns: ClubRunPerformance[] = [];
+  if (userClubs.length > 0) {
+    try {
+      // Fetch runs from all clubs in parallel
+      // Fetch enough runs per club to ensure we capture the 10 most recent by created_at
+      // Since API orders by run_date first, then created_at, we fetch 20 per club to be safe
+      const allClubRuns = await Promise.all(
+        userClubs.map((club) => getClubRuns(club.id, { limit: 20, status: "completed" }))
+      );
+
+      // Combine all runs and sort by created_at descending
+      const combinedRuns = allClubRuns.flat();
+      
+      // Debug: Log user's runs to see if they're included
+      const userRuns = combinedRuns.filter((run) => run.userId === session.user.id);
+      if (userRuns.length > 0) {
+        console.log(`[Club Recent Runs] Found ${userRuns.length} runs for current user`);
+      } else {
+        console.log(`[Club Recent Runs] No runs found for current user (userId: ${session.user.id})`);
+        console.log(`[Club Recent Runs] Total runs fetched: ${combinedRuns.length}`);
+      }
+      
+      recentClubRuns = combinedRuns
+        .sort((a, b) => {
+          const timeA = new Date(a.createdAt).getTime();
+          const timeB = new Date(b.createdAt).getTime();
+          return timeB - timeA;
+        });
+      // Don't limit here - pass all runs to component, it will handle display limit
+    } catch (error) {
+      console.error("Error fetching recent club runs:", error);
+      // Continue without showing recent runs if there's an error
+    }
+  }
+
   // Get welcome text - use club welcome text if available, otherwise use default
   const activeClub = userClubs[0];
   const clubWelcomeText = activeClub?.welcomeText
@@ -313,8 +350,18 @@ export default async function ChallengeCalendarPage({
                 />
               </div>
 
+              {/* Recent Club Runs - placed below calendar */}
+              {recentClubRuns.length > 0 && (
+                <div className="mt-4 md:mt-6">
+                  <ClubRecentRuns
+                    initialRuns={recentClubRuns}
+                    clubIds={userClubs.map((club) => club.id)}
+                  />
+                </div>
+              )}
+
               {/* Club Button - placed below calendar */}
-              <div className="flex justify-center pb-4">
+              <div className="flex justify-center pb-4 mt-4">
                 <Button
                   asChild
                   size="sm"
