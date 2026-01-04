@@ -267,7 +267,14 @@
     "daysElapsed": "Dag {days} af {total}",
     "daysRemaining": "{days} dage tilbage",
     "complete": "færdig",
-    "viewChallenges": "Se alle udfordringer"
+    "viewChallenges": "Se alle udfordringer",
+    "activity": "Aktivitet",
+    "activityDescription": "Al aktivitet for {month}",
+    "noRunsThisMonth": "Ingen løb logget denne måned",
+    "runs": "løb",
+    "days": "dage",
+    "door": "Dør",
+    "noActiveChallenge": "Ingen aktiv udfordring i øjeblikket."
   },
   "januaryPromotion": {
     "title": "Start dit nytårsudfordring!",

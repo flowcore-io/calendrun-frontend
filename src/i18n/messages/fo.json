@@ -267,7 +267,14 @@
     "daysElapsed": "Dagur {days} av {total}",
     "daysRemaining": "{days} dagar eftir",
     "complete": "liðugur",
-    "viewChallenges": "Sí allar avbjóðingar"
+    "viewChallenges": "Sí allar avbjóðingar",
+    "activity": "Virksemi",
+    "activityDescription": "Alt virksemi fyri {month}",
+    "noRunsThisMonth": "Ongir renn loggaðir í hesum mánaði",
+    "runs": "ferðir",
+    "days": "dagar",
+    "door": "Hurð",
+    "noActiveChallenge": "Onga virka avbjóðing í løtuni."
   },
   "januaryPromotion": {
     "title": "Byrja tína nýggjársavbjóðing!",

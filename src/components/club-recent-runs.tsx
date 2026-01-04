@@ -5,6 +5,7 @@ import { formatDate, formatTime } from "@/lib/date-utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 
 type ClubRecentRunsProps = {
   initialRuns: ClubRunPerformance[];
@@ -18,6 +19,12 @@ export function ClubRecentRuns({ initialRuns, clubIds }: ClubRecentRunsProps) {
   const [loadMoreIncrement, setLoadMoreIncrement] = useState(20);
   const [hasMoreRuns, setHasMoreRuns] = useState(true); // Assume there are more runs initially
   const t = useTranslations("calendar");
+  const router = useRouter();
+
+  const handleUserClick = (userId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    router.push(`/club/runner/${userId}`);
+  };
 
   if (runs.length === 0) {
     return null;
@@ -94,9 +101,12 @@ export function ClubRecentRuns({ initialRuns, clubIds }: ClubRecentRunsProps) {
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate">
+                <button
+                  onClick={(e) => handleUserClick(run.userId, e)}
+                  className="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors text-left"
+                >
                   {run.memberName || run.runnerName || "Unknown Runner"}
-                </span>
+                </button>
                 {run.memberRole === "admin" && (
                   <span className="text-xs px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
                     Admin

@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "script:ingest-users": "tsx scripts/ingest-users-with-runs.ts",
+    "script:fetch-users": "tsx scripts/fetch-users-with-runs.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

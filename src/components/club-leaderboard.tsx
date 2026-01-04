@@ -1,6 +1,8 @@
 "use client";
 
 import type { LeaderboardEntry } from "@/lib/club-service";
+import { useRouter } from "@/i18n/routing";
+import { useParams } from "next/navigation";
 
 interface ClubLeaderboardProps {
   entries: LeaderboardEntry[];
@@ -14,9 +16,17 @@ interface ClubLeaderboardProps {
 }
 
 export function ClubLeaderboard({ entries, translations }: ClubLeaderboardProps) {
+  const params = useParams();
+  const locale = params.locale as string;
+  const router = useRouter();
+
   if (entries.length === 0) {
     return <div className="py-12 text-center text-zinc-200">{translations.noMembers}</div>;
   }
+
+  const handleRowClick = (userId: string) => {
+    router.push(`/club/runner/${userId}`);
+  };
 
   // Calculate totals
   const totals = entries.reduce(
@@ -61,7 +71,11 @@ export function ClubLeaderboard({ entries, translations }: ClubLeaderboardProps)
         </thead>
         <tbody className="divide-y divide-zinc-200/50 bg-white/80 dark:divide-zinc-700/50 dark:bg-zinc-900/80">
           {entries.map((entry, index) => (
-            <tr key={entry.userId}>
+            <tr
+              key={entry.userId}
+              onClick={() => handleRowClick(entry.userId)}
+              className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer"
+            >
               <td className="whitespace-nowrap px-2 sm:px-6 py-4 text-sm text-zinc-600 dark:text-zinc-300">
                 {index + 1}
               </td>

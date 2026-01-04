@@ -267,7 +267,14 @@
     "daysElapsed": "Day {days} of {total}",
     "daysRemaining": "{days} days remaining",
     "complete": "complete",
-    "viewChallenges": "View all challenges"
+    "viewChallenges": "View all challenges",
+    "activity": "Activity",
+    "activityDescription": "All activity for {month}",
+    "noRunsThisMonth": "No runs logged this month",
+    "runs": "runs",
+    "days": "days",
+    "door": "Door",
+    "noActiveChallenge": "No active challenge at the moment."
   },
   "januaryPromotion": {
     "title": "Start Your New Year Challenge!",
