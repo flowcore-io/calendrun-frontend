@@ -82,12 +82,34 @@ export function RunLogForm({ day, instanceId, recordedAt, onClose, onSuccess }: 
         const responseData = await response.json();
         
         // Dispatch event to update recent runs list immediately
-        if (responseData.run && responseData.run.status === "completed") {
-          window.dispatchEvent(
-            new CustomEvent("club-run-added", {
-              detail: responseData.run,
-            })
-          );
+        if (responseData.run) {
+          if (responseData.run.status === "completed") {
+            // For new runs (POST) or updated runs that are still completed
+            if (method === "POST") {
+              window.dispatchEvent(
+                new CustomEvent("club-run-added", {
+                  detail: responseData.run,
+                })
+              );
+            } else {
+              // For updates (PATCH)
+              window.dispatchEvent(
+                new CustomEvent("club-run-updated", {
+                  detail: responseData.run,
+                })
+              );
+            }
+          } else {
+            // If status changed to non-completed (planned/skipped), remove from list
+            window.dispatchEvent(
+              new CustomEvent("club-run-deleted", {
+                detail: {
+                  id: responseData.run.id,
+                  userId: responseData.run.userId,
+                },
+              })
+            );
+          }
         }
 
         // Refresh data after successful save
@@ -127,6 +149,20 @@ export function RunLogForm({ day, instanceId, recordedAt, onClose, onSuccess }: 
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.error || t("failedToDelete"));
+      }
+
+      const responseData = await response.json();
+      
+      // Dispatch event to remove run from recent runs list immediately
+      if (responseData.run?.id) {
+        window.dispatchEvent(
+          new CustomEvent("club-run-deleted", {
+            detail: {
+              id: responseData.run.id,
+              userId: responseData.run.userId,
+            },
+          })
+        );
       }
 
       // Refresh data after successful delete

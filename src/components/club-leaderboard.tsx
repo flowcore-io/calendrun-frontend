@@ -2,7 +2,6 @@
 
 import type { LeaderboardEntry } from "@/lib/club-service";
 import { useRouter } from "@/i18n/routing";
-import { useParams } from "next/navigation";
 
 interface ClubLeaderboardProps {
   entries: LeaderboardEntry[];
@@ -16,8 +15,6 @@ interface ClubLeaderboardProps {
 }
 
 export function ClubLeaderboard({ entries, translations }: ClubLeaderboardProps) {
-  const params = useParams();
-  const locale = params.locale as string;
   const router = useRouter();
 
   if (entries.length === 0) {

@@ -93,9 +93,85 @@ export function ClubRecentRuns({
       }
     };
 
+    const handleRunDeleted = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const deletedRun = customEvent.detail as {
+        id: string;
+        userId: string;
+      };
+
+      // Only remove if it's from the current user
+      if (deletedRun.userId === currentUserId) {
+        setRuns((prevRuns) => prevRuns.filter((run) => run.id !== deletedRun.id));
+      }
+    };
+
+    const handleRunUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const updatedRun = customEvent.detail as {
+        id: string;
+        instanceId: string;
+        userId: string;
+        runnerName?: string;
+        runDate: string;
+        distanceKm: number;
+        timeMinutes?: number;
+        notes?: string;
+        status: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+
+      // Only update if it's from the current user and is completed
+      if (updatedRun.userId === currentUserId && updatedRun.status === "completed") {
+        const clubRun: ClubRunPerformance = {
+          id: updatedRun.id,
+          instanceId: updatedRun.instanceId,
+          userId: updatedRun.userId,
+          runnerName: updatedRun.runnerName,
+          runDate: updatedRun.runDate,
+          distanceKm: updatedRun.distanceKm,
+          timeMinutes: updatedRun.timeMinutes,
+          notes: updatedRun.notes,
+          status: updatedRun.status as "completed",
+          createdAt: updatedRun.createdAt,
+          updatedAt: updatedRun.updatedAt,
+        };
+
+        setRuns((prevRuns) => {
+          const existingIndex = prevRuns.findIndex((r) => r.id === clubRun.id);
+          if (existingIndex >= 0) {
+            // Update existing run
+            const updated = [...prevRuns];
+            updated[existingIndex] = clubRun;
+            // Re-sort by createdAt descending
+            return updated.sort((a, b) => {
+              const timeA = new Date(a.createdAt).getTime();
+              const timeB = new Date(b.createdAt).getTime();
+              return timeB - timeA;
+            });
+          }
+          // If not found, add it (shouldn't happen, but handle gracefully)
+          const updated = [clubRun, ...prevRuns];
+          return updated.sort((a, b) => {
+            const timeA = new Date(a.createdAt).getTime();
+            const timeB = new Date(b.createdAt).getTime();
+            return timeB - timeA;
+          });
+        });
+      } else if (updatedRun.userId === currentUserId && updatedRun.status !== "completed") {
+        // If status changed to non-completed, remove from list
+        setRuns((prevRuns) => prevRuns.filter((run) => run.id !== updatedRun.id));
+      }
+    };
+
     window.addEventListener("club-run-added", handleRunAdded);
+    window.addEventListener("club-run-deleted", handleRunDeleted);
+    window.addEventListener("club-run-updated", handleRunUpdated);
     return () => {
       window.removeEventListener("club-run-added", handleRunAdded);
+      window.removeEventListener("club-run-deleted", handleRunDeleted);
+      window.removeEventListener("club-run-updated", handleRunUpdated);
     };
   }, [currentUserId]);
 

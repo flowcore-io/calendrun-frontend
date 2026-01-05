@@ -281,6 +281,8 @@ export async function PATCH(
       run: {
         id: updatedRun.id,
         instanceId: updatedRun.instanceId,
+        userId: updatedRun.userId,
+        runnerName: updatedRun.runnerName,
         runDate: updatedRun.runDate,
         distanceKm: updatedRun.distanceKm,
         timeMinutes: updatedRun.timeMinutes,
@@ -421,7 +423,10 @@ export async function DELETE(
     return NextResponse.json({
       ok: true,
       message: "Run deleted successfully",
-      deletedRunId: runToDelete.id,
+      run: {
+        id: runToDelete.id,
+        userId: runToDelete.userId,
+      },
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
