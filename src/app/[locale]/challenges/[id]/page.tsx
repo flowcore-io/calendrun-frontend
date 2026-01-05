@@ -357,18 +357,7 @@ export default async function ChallengeCalendarPage({
                 />
               </div>
 
-              {/* Recent Club Runs - placed below calendar */}
-              {recentClubRuns.length > 0 && (
-                <div className="mt-4 md:mt-6">
-                  <ClubRecentRuns
-                    initialRuns={recentClubRuns}
-                    clubIds={userClubs.map((club) => club.id)}
-                    currentUserId={session.user.id}
-                  />
-                </div>
-              )}
-
-              {/* Club and Training Plan Buttons - placed below calendar */}
+              {/* Club and Training Plan Buttons - moved above recent club runs */}
               <div className="flex justify-center gap-4 pb-4 mt-4">
                 <Button
                   asChild
@@ -388,6 +377,17 @@ export default async function ChallengeCalendarPage({
                   </Button>
                 )}
               </div>
+
+              {/* Recent Club Runs - now placed below buttons */}
+              {recentClubRuns.length > 0 && (
+                <div className="mt-4 md:mt-6">
+                  <ClubRecentRuns
+                    initialRuns={recentClubRuns}
+                    clubIds={userClubs.map((club) => club.id)}
+                    currentUserId={session.user.id}
+                  />
+                </div>
+              )}
             </ChallengeStateProvider>
           </ChallengeProgressProvider>
         </main>
