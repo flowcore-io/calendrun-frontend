@@ -23,12 +23,14 @@
     "myCalendar": "My Calendar",
     "profile": "Profile",
     "club": "Club",
+    "trainingPlan": "Training Plan",
     "everybody": "Everybody",
     "admin": "Admin",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "myLog": "My Log",
     "backToDashboard": "← Back to Dashboard",
+    "backToCalendar": "← Back to Calendar",
     "challenges": "Challenges"
   },
   "home": {
@@ -45,6 +47,36 @@
     "poweredBy": "Powered by Usable",
     "terms": "Terms and Conditions",
     "privacy": "Privacy Policy"
+  },
+  "trainingPlan": {
+    "description": "Training plan for {clubName} members in 2026",
+    "monthNames": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June"
+    },
+    "dayNames": {
+      "monday": "Mon",
+      "tuesday": "Tue",
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday": "Sun"
+    },
+    "title": "Training Plan",
+    "noTraining": "No training planned for this month.",
+    "intensity": "Intensity",
+    "training": "Training",
+    "trainingParts": "Training Parts",
+    "notes": "Notes",
+    "close": "Close",
+    "week": "Week",
+    "total": "Total",
+    "km": "km"
   },
   "challenges": {
     "browseTitle": "Browse Challenges",

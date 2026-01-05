@@ -11,9 +11,10 @@ import Image from "next/image";
 type AppHeaderProps = {
   locale: Locale;
   session: Session | null;
+  isBragdidMember?: boolean;
 };
 
-export function AppHeader({ locale, session }: AppHeaderProps) {
+export function AppHeader({ locale, session, isBragdidMember = false }: AppHeaderProps) {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
@@ -42,6 +43,7 @@ export function AppHeader({ locale, session }: AppHeaderProps) {
               userEmail={session.user.email}
               isAdmin={isAdmin}
               userId={session.user.id}
+              isBragdidMember={isBragdidMember}
             />
           </div>
         </div>

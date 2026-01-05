@@ -23,12 +23,14 @@
     "myCalendar": "Min Kalender",
     "profile": "Profil",
     "club": "Klub",
+    "trainingPlan": "Træningsplan",
     "everybody": "Alle",
     "admin": "Admin",
     "openMenu": "Åbn menu",
     "closeMenu": "Luk menu",
     "myLog": "Min Log",
     "backToDashboard": "← Tilbage til Dashboard",
+    "backToCalendar": "← Tilbage til Kalender",
     "challenges": "Udfordringer"
   },
   "home": {
@@ -45,6 +47,36 @@
     "poweredBy": "Powered by Usable",
     "terms": "Vilkår og betingelser",
     "privacy": "Privatlivspolitik"
+  },
+  "trainingPlan": {
+    "description": "Træningsplan for {clubName} medlemmer i 2026",
+    "monthNames": {
+      "january": "Januar",
+      "february": "Februar",
+      "march": "Marts",
+      "april": "April",
+      "may": "Maj",
+      "june": "Juni"
+    },
+    "dayNames": {
+      "monday": "Man",
+      "tuesday": "Tir",
+      "wednesday": "Ons",
+      "thursday": "Tor",
+      "friday": "Fre",
+      "saturday": "Lør",
+      "sunday": "Søn"
+    },
+    "title": "Træningsplan",
+    "noTraining": "Ingen træning planlagt for denne måned.",
+    "intensity": "Intensitet",
+    "training": "Træning",
+    "trainingParts": "Træningsdele",
+    "notes": "Noter",
+    "close": "Luk",
+    "week": "Uge",
+    "total": "I alt",
+    "km": "km"
   },
   "challenges": {
     "browseTitle": "Gennemse Udfordringer",

@@ -3,6 +3,7 @@ import { AddToHomeScreen } from "@/components/add-to-home-screen";
 import { AppHeader } from "@/components/app-header";
 import { Footer } from "@/components/footer";
 import { Providers } from "@/components/providers";
+import { getUserClubs } from "@/lib/club-service";
 import { type Locale, routing } from "@/i18n/routing";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
@@ -89,6 +90,21 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const session = await getServerAuthSession();
 
+  // Check if user is a member of Bragdið club for training plan access
+  let isBragdidMember = false;
+  if (session?.user?.id) {
+    try {
+      const userClubs = await getUserClubs(session.user.id);
+      isBragdidMember = userClubs.some(club =>
+        club.name.toLowerCase().includes('bragdið') ||
+        club.name.toLowerCase().includes('bragd')
+      );
+    } catch (error) {
+      // If club check fails, assume user is not a member
+      console.warn('Failed to check club membership:', error);
+    }
+  }
+
   return (
     <html lang={locale} className="overflow-x-hidden">
       <body
@@ -134,7 +150,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <div className="flex min-h-screen w-full max-w-full flex-col overflow-x-hidden">
-              <AppHeader locale={locale as Locale} session={session} />
+              <AppHeader locale={locale as Locale} session={session} isBragdidMember={isBragdidMember} />
               <main className="flex flex-1 flex-col overflow-x-hidden bg-gradient-to-b from-zinc-50 to-white pt-14 dark:from-black dark:to-zinc-950">
                 {children}
               </main>

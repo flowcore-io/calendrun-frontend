@@ -23,12 +23,14 @@
     "myCalendar": "Mín kalendari",
     "profile": "Vangi",
     "club": "Felag",
+    "trainingPlan": "Venjingarætlan",
     "everybody": "Øll",
     "admin": "Fyrisiting",
     "openMenu": "Lat valmynd upp",
     "closeMenu": "Lat valmynd aftur",
     "myLog": "Mín Loggur",
     "backToDashboard": "← Aftur til yvirlit",
+    "backToCalendar": "← Aftur til kalendar",
     "challenges": "Avbjóðingar"
   },
   "home": {
@@ -45,6 +47,36 @@
     "poweredBy": "Powered by Usable",
     "terms": "Treytir",
     "privacy": "Privatlívsvernd"
+  },
+  "trainingPlan": {
+    "description": "Venjingarætlan fyri {clubName} limir í 2026",
+    "monthNames": {
+      "january": "Januar",
+      "february": "Februar",
+      "march": "Mars",
+      "april": "Apríl",
+      "may": "Mai",
+      "june": "Juni"
+    },
+    "dayNames": {
+      "monday": "Mán",
+      "tuesday": "Týs",
+      "wednesday": "Mik",
+      "thursday": "Hós",
+      "friday": "Frí",
+      "saturday": "Ley",
+      "sunday": "Sun"
+    },
+    "title": "Venjingarætlan",
+    "noTraining": "Eingin venjing ætlað fyri henda mánaðin.",
+    "intensity": "Kappingarføri",
+    "training": "Venjing",
+    "trainingParts": "Venjingardeilir",
+    "notes": "Notar",
+    "close": "Lat aftur",
+    "week": "Vika",
+    "total": "Í alt",
+    "km": "km"
   },
   "challenges": {
     "browseTitle": "Kanna avbjóðingar",

@@ -19,7 +19,7 @@ export function CurrentChallengeStatus({ challenge }: CurrentChallengeStatusProp
   const endDate = new Date(challenge.endDate);
   const now = new Date();
 
-  const daysElapsed = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysElapsed = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   const daysTotal = challenge.days;
   const daysRemaining = Math.max(0, daysTotal - daysElapsed);
   const progressPercentage = Math.round((daysElapsed / daysTotal) * 100);

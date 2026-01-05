@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { getChallengeInstance, listChallengeInstances } from "@/lib/challenge-instances";
 import { getChallengeTemplate, listChallengeTemplates } from "@/lib/challenge-templates";
-import { type LocalizedString, getUserClubs } from "@/lib/club-service";
+import { getUserClubs, type LocalizedString } from "@/lib/club-service";
 import { getClubRuns, listRunPerformances, type ClubRunPerformance } from "@/lib/run-performances";
 import { getVariantDisplayName, variantToMultiplier } from "@/lib/variant-utils";
 import { resolveTheme } from "@/theme/themes";
@@ -37,6 +37,7 @@ export default async function ChallengeCalendarPage({
   const tCommon = await getTranslations("common");
   const tProfile = await getTranslations("profile");
   const tCalendar = await getTranslations("calendar");
+  const tNav = await getTranslations("navigation");
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -183,6 +184,12 @@ export default async function ChallengeCalendarPage({
       : userClubs.length > 1
         ? tProfile("clubs")
         : tCommon("viewClub");
+
+  // Check if user is a member of Bragdið club (for training plan access)
+  const isBragdidMember = userClubs.some(club =>
+    club.name.toLowerCase().includes('bragdið') ||
+    club.name.toLowerCase().includes('bragd')
+  );
 
   // Fetch recent runs from all clubs the user is a member of
   let recentClubRuns: ClubRunPerformance[] = [];
@@ -361,8 +368,8 @@ export default async function ChallengeCalendarPage({
                 </div>
               )}
 
-              {/* Club Button - placed below calendar */}
-              <div className="flex justify-center pb-4 mt-4">
+              {/* Club and Training Plan Buttons - placed below calendar */}
+              <div className="flex justify-center gap-4 pb-4 mt-4">
                 <Button
                   asChild
                   size="sm"
@@ -370,6 +377,16 @@ export default async function ChallengeCalendarPage({
                 >
                   <Link href="/club">{clubLabel}</Link>
                 </Button>
+                {isBragdidMember && (
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="outline"
+                    className="shadow-md"
+                  >
+                    <Link href="/training-plan">{tNav("trainingPlan")}</Link>
+                  </Button>
+                )}
               </div>
             </ChallengeStateProvider>
           </ChallengeProgressProvider>

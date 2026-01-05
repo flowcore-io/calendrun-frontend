@@ -11,6 +11,7 @@ interface HamburgerMenuProps {
   userEmail?: string | null;
   isAdmin?: boolean;
   userId?: string | null; // Added userId to check for club admin
+  isBragdidMember?: boolean;
 }
 
 function MenuPortal({ children }: { children: React.ReactNode }) {
@@ -30,7 +31,7 @@ function MenuPortal({ children }: { children: React.ReactNode }) {
   return createPortal(children, document.body);
 }
 
-export function HamburgerMenu({ userName, userEmail, isAdmin, userId }: HamburgerMenuProps) {
+export function HamburgerMenu({ userName, userEmail, isAdmin, userId, isBragdidMember = false }: HamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const prevPathnameRef = useRef(pathname);
@@ -339,6 +340,35 @@ export function HamburgerMenu({ userName, userEmail, isAdmin, userId }: Hamburge
                     {t("challenges")}
                   </Link>
                 </li>
+                {isBragdidMember && (
+                  <li>
+                    <Link
+                      href="/training-plan"
+                      onClick={closeMenu}
+                      className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                        pathname === "/training-plan"
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                      }`}
+                    >
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                        />
+                      </svg>
+                      {t("trainingPlan")}
+                    </Link>
+                  </li>
+                )}
                 {isClubAdmin && (
                   <li>
                     <Link
