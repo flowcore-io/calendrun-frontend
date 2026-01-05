@@ -185,11 +185,6 @@ export function ClubRecentRuns({
                 >
                   {run.memberName || run.runnerName || "Unknown Runner"}
                 </button>
-                {run.memberRole === "admin" && (
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                    Admin
-                  </span>
-                )}
               </div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 {(() => {
