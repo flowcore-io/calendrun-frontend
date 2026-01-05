@@ -137,6 +137,8 @@ export async function POST(
       run: {
         id: run.id,
         instanceId: run.instanceId,
+        userId: run.userId,
+        runnerName: run.runnerName,
         runDate: run.runDate,
         distanceKm: run.distanceKm,
         timeMinutes: run.timeMinutes,

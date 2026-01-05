@@ -2,7 +2,7 @@
 
 import type { ClubRunPerformance } from "@/lib/run-performances";
 import { formatDate, formatTime } from "@/lib/date-utils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
@@ -10,16 +10,94 @@ import { useRouter } from "@/i18n/routing";
 type ClubRecentRunsProps = {
   initialRuns: ClubRunPerformance[];
   clubIds: string[];
+  currentUserId: string;
 };
 
-export function ClubRecentRuns({ initialRuns, clubIds }: ClubRecentRunsProps) {
+export function ClubRecentRuns({
+  initialRuns,
+  clubIds,
+  currentUserId,
+}: ClubRecentRunsProps) {
   const [runs, setRuns] = useState<ClubRunPerformance[]>(initialRuns);
   const [displayCount, setDisplayCount] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
   const [loadMoreIncrement, setLoadMoreIncrement] = useState(20);
   const [hasMoreRuns, setHasMoreRuns] = useState(true); // Assume there are more runs initially
+  const previousInitialRunsRef = useRef<string>(JSON.stringify(initialRuns));
   const t = useTranslations("calendar");
   const router = useRouter();
+
+  // Refresh runs when initialRuns prop changes (e.g., after router.refresh())
+  useEffect(() => {
+    const currentInitialRunsStr = JSON.stringify(initialRuns);
+    if (currentInitialRunsStr !== previousInitialRunsRef.current) {
+      // New runs have been added, refresh the list
+      const sortedRuns = [...initialRuns].sort((a, b) => {
+        const timeA = new Date(a.createdAt).getTime();
+        const timeB = new Date(b.createdAt).getTime();
+        return timeB - timeA;
+      });
+      setRuns(sortedRuns);
+      previousInitialRunsRef.current = currentInitialRunsStr;
+    }
+  }, [initialRuns]);
+
+  // Listen for new runs being added
+  useEffect(() => {
+    const handleRunAdded = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const newRun = customEvent.detail as {
+        id: string;
+        instanceId: string;
+        userId: string;
+        runnerName?: string;
+        runDate: string;
+        distanceKm: number;
+        timeMinutes?: number;
+        notes?: string;
+        status: string;
+        createdAt: string;
+      };
+
+      // Only add if it's from the current user and is completed
+      if (newRun.userId === currentUserId && newRun.status === "completed") {
+        // Create a ClubRunPerformance from the run data
+        const clubRun: ClubRunPerformance = {
+          id: newRun.id,
+          instanceId: newRun.instanceId,
+          userId: newRun.userId,
+          runnerName: newRun.runnerName,
+          runDate: newRun.runDate,
+          distanceKm: newRun.distanceKm,
+          timeMinutes: newRun.timeMinutes,
+          notes: newRun.notes,
+          status: newRun.status as "completed",
+          createdAt: newRun.createdAt,
+          updatedAt: newRun.createdAt,
+        };
+
+        // Add to the beginning of the list (most recent)
+        setRuns((prevRuns) => {
+          // Check if run already exists (avoid duplicates)
+          if (prevRuns.some((r) => r.id === clubRun.id)) {
+            return prevRuns;
+          }
+          const updated = [clubRun, ...prevRuns];
+          // Sort by createdAt descending
+          return updated.sort((a, b) => {
+            const timeA = new Date(a.createdAt).getTime();
+            const timeB = new Date(b.createdAt).getTime();
+            return timeB - timeA;
+          });
+        });
+      }
+    };
+
+    window.addEventListener("club-run-added", handleRunAdded);
+    return () => {
+      window.removeEventListener("club-run-added", handleRunAdded);
+    };
+  }, [currentUserId]);
 
   const handleUserClick = (userId: string, e: React.MouseEvent) => {
     e.stopPropagation();

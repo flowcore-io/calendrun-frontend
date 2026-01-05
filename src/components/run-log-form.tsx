@@ -79,6 +79,17 @@ export function RunLogForm({ day, instanceId, recordedAt, onClose, onSuccess }: 
           throw new Error(data.error || t("failedToSave"));
         }
 
+        const responseData = await response.json();
+        
+        // Dispatch event to update recent runs list immediately
+        if (responseData.run && responseData.run.status === "completed") {
+          window.dispatchEvent(
+            new CustomEvent("club-run-added", {
+              detail: responseData.run,
+            })
+          );
+        }
+
         // Refresh data after successful save
         router.refresh();
       } catch (err) {

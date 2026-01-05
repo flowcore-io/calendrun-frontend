@@ -356,6 +356,7 @@ export default async function ChallengeCalendarPage({
                   <ClubRecentRuns
                     initialRuns={recentClubRuns}
                     clubIds={userClubs.map((club) => club.id)}
+                    currentUserId={session.user.id}
                   />
                 </div>
               )}
