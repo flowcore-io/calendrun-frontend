@@ -21,12 +21,6 @@ export default async function Home({
   const tCommon = await getTranslations("common");
   const session = await getServerAuthSession();
 
-  // User is logged in - check if they have an active challenge
-  const instances = await listChallengeInstances({
-    userId: session?.user?.id || "",
-    status: "active",
-  });
-
   // If not logged in, show landing page
   if (!session) {
     return (
@@ -58,6 +52,12 @@ export default async function Home({
       </>
     );
   }
+
+  // User is logged in - check if they have an active challenge
+  const instances = await listChallengeInstances({
+    userId: session.user.id,
+    status: "active",
+  });
 
   // If user has an active challenge, redirect to it
   if (instances.length > 0) {
