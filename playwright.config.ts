@@ -35,7 +35,7 @@ export default defineConfig({
     timeout: 10000, // 10 seconds for assertions
   },
   use: {
-    ...devices["Desktop Chrome"].use,
+    ...devices["Desktop Chrome"],
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
@@ -64,9 +64,5 @@ export default defineConfig({
     command: "yarn dev --port 3000",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
-  },
-  // Expose backend URL as environment variable for tests
-  env: {
-    E2E_BACKEND_URL: BACKEND_URL,
   },
 });

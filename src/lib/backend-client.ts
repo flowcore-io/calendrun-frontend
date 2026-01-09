@@ -10,7 +10,7 @@
 import { env } from "@/env.mjs";
 import { cookies } from "next/headers";
 
-const BACKEND_API_BASE_URL = env.NEXT_PUBLIC_BACKEND_API_URL;
+const BACKEND_API_BASE_URL = env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:18765";
 const BACKEND_API_KEY = env.BACKEND_API_KEY;
 
 /**

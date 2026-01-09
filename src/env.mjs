@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     NEXTAUTH_SECRET: z.string().min(1),
     // NEXTAUTH_URL is optional on Vercel - it auto-detects from VERCEL_URL
-    NEXTAUTH_URL: z.string().url().optional(),
+    NEXTAUTH_URL: z.string().url().default("http://localhost:3000"),
     KEYCLOAK_ISSUER: z.string().url(),
     KEYCLOAK_CLIENT_ID: z.string().min(1),
     KEYCLOAK_CLIENT_SECRET: z.string().min(1),
