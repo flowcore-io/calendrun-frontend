@@ -9,7 +9,9 @@ setup("authenticate with Keycloak", async ({ page }) => {
   const testPassword = process.env.KEYCLOAK_TEST_USER_PASSWORD;
 
   if (!testUser || !testPassword) {
-    throw new Error("KEYCLOAK_TEST_USER and KEYCLOAK_TEST_USER_PASSWORD must be set in .env.local");
+    throw new Error(
+      "KEYCLOAK_TEST_USER and KEYCLOAK_TEST_USER_PASSWORD must be set in .env.development.local, .env.local, or .env.development"
+    );
   }
 
   // Navigate to a protected page with callbackUrl to ensure redirect back

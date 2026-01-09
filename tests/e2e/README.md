@@ -10,7 +10,11 @@ This project uses Playwright for end-to-end testing with **real Keycloak authent
    yarn playwright install chromium
    ```
 
-2. **Configure test credentials in `.env.local`:**
+2. **Configure test credentials** in one of these files (loaded in priority order):
+   - `.env.development.local` (highest priority, gitignored)
+   - `.env.local` (gitignored)
+   - `.env.development` (can be committed)
+   
    ```bash
    KEYCLOAK_TEST_USER=your-test-username
    KEYCLOAK_TEST_USER_PASSWORD=your-test-password
