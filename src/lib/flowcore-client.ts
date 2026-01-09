@@ -10,8 +10,10 @@ import { env } from "@/env.mjs";
 
 const FLOWCORE_INGESTION_BASE_URL = env.FLOWCORE_INGESTION_BASE_URL;
 const FLOWCORE_TENANT = env.FLOWCORE_TENANT;
-const FLOWCORE_DATA_CORE_ID = env.FLOWCORE_DATA_CORE_ID;
 const FLOWCORE_API_KEY = env.FLOWCORE_API_KEY;
+const FLOWCORE_DATA_CORE_ID = env.FLOWCORE_DATA_CORE_ID;
+
+const isDevMode = process.env.NEXT_PUBLIC_DEV_MODE === "true";
 
 if (!FLOWCORE_API_KEY) {
   console.warn("⚠️  FLOWCORE_API_KEY not set - event emission will fail");
@@ -19,6 +21,10 @@ if (!FLOWCORE_API_KEY) {
 
 if (!FLOWCORE_DATA_CORE_ID) {
   console.warn("⚠️  FLOWCORE_DATA_CORE_ID not set - event emission will fail");
+}
+
+if (isDevMode) {
+  console.log(`🔧 DEV MODE: Using datacore ID ${FLOWCORE_DATA_CORE_ID}`);
 }
 
 /**

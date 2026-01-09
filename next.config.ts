@@ -1,18 +1,27 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import { env } from "./src/env.mjs";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  env: {
-    NEXT_PUBLIC_APP_ENV: env.NEXT_PUBLIC_APP_ENV,
-  },
   experimental: {
     optimizePackageImports: [
       "@radix-ui/react-slot",
       "@tanstack/react-query",
       "@tanstack/react-form",
+    ],
+  },
+  // Exclude test output directories from file watching to prevent hot reload issues during E2E tests
+  watchOptions: {
+    ignored: [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/test-results/**",
+      "**/.playwright/**",
+      "**/.auth/**",
+      "**/tests/e2e/**/*.json",
+      "**/playwright-report/**",
+      "**/playwright/.cache/**",
     ],
   },
 };
