@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "@/auth";
 import { AddToHomeScreen } from "@/components/add-to-home-screen";
 import { AppHeader } from "@/components/app-header";
+import { DevModeIndicator } from "@/components/dev-mode-indicator";
 import { Footer } from "@/components/footer";
 import { Providers } from "@/components/providers";
 import { getUserClubs } from "@/lib/club-service";
@@ -156,6 +157,7 @@ export default async function LocaleLayout({
               </main>
               <Footer />
               <AddToHomeScreen />
+              <DevModeIndicator />
             </div>
           </Providers>
         </NextIntlClientProvider>
