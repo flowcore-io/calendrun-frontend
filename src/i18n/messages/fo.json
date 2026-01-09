@@ -306,7 +306,7 @@
     "runs": "ferðir",
     "days": "dagar",
     "door": "Hurð",
-    "noActiveChallenge": "Onga virka avbjóðing í løtuni."
+    "noActiveChallenge": "Onga virkin avbjóðing í løtuni."
   },
   "januaryPromotion": {
     "title": "Byrja tína nýggjársavbjóðing!",
@@ -314,5 +314,17 @@
     "selectDistance": "Vel tína avbjóðingslongd:",
     "joinJanuary": "Melda til januar avbjóðing",
     "maybeLater": "Kanska seinni"
+  },
+  "onboarding": {
+    "title": "Vælkomin til CalendRun!",
+    "description": "Byrja við at melda teg til nýggjasta mánaðaravbjóðingina. Vel títt avbjóðingar-stig.",
+    "selectVariant": "Vel títt avbjóðingar-stig",
+    "clubTokenLabel": "Felags-lykil",
+    "clubTokenPlaceholder": "Set felags-lykil inn (valfrítt)",
+    "clubTokenHelp": "Um tú hevur ein felags-lykil, set hann inn her fyri at melda teg í felagið.",
+    "joinButton": "Melda til Avbjóðing",
+    "joining": "Meldar til...",
+    "joinError": "Kundi ikki melda til avbjóðing. Vinarliga royn aftur.",
+    "selectVariantError": "Vinarliga vel eitt avbjóðingar-stig"
   }
 }

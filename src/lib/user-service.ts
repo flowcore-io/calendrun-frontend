@@ -9,17 +9,20 @@ export async function syncUser(
   name?: string | null,
   email?: string | null
 ): Promise<void> {
+  console.log("[syncUser] Starting user sync:", { userId, name, email });
   try {
     // Emit user.created or user.updated event
     // The backend handler will handle upsert logic
+    console.log("[syncUser] Emitting user.created.0 event...");
     await emitEvent("user.0", "user.created.0", {
       id: userId,
       name: name ?? undefined,
       email: email ?? undefined,
     });
+    console.log("[syncUser] ✅ User sync completed successfully");
   } catch (error) {
     // Log but don't throw - user sync shouldn't block other operations
-    console.error("Failed to sync user to Flowcore:", error);
+    console.error("[syncUser] ❌ Failed to sync user to Flowcore:", error);
   }
 }
 

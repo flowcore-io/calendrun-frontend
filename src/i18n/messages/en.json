@@ -314,5 +314,17 @@
     "selectDistance": "Choose your challenge distance:",
     "joinJanuary": "Join January Challenge",
     "maybeLater": "Maybe Later"
+  },
+  "onboarding": {
+    "title": "Welcome to CalendRun!",
+    "description": "Get started by joining the current month's challenge. Select your challenge level and optionally join a club.",
+    "selectVariant": "Select your challenge level",
+    "clubTokenLabel": "Club Invite Token",
+    "clubTokenPlaceholder": "Enter club token (optional)",
+    "clubTokenHelp": "If you have a club invite token, enter it here to join the club when you join the challenge.",
+    "joinButton": "Join Challenge",
+    "joining": "Joining...",
+    "joinError": "Failed to join challenge. Please try again.",
+    "selectVariantError": "Please select a challenge level"
   }
 }

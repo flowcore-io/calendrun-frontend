@@ -79,8 +79,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Sync user to Flowcore before creating challenge
+    console.log("[Join Challenge] About to sync user:", {
+      userId: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+    });
     const { syncUser } = await import("@/lib/user-service");
     await syncUser(session.user.id, session.user.name ?? null, session.user.email ?? null);
+    console.log("[Join Challenge] User sync completed");
 
     // Handle club invite token if provided
     const { inviteToken } = body;
@@ -106,6 +112,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the challenge instance in Usable
+    console.log("[Join Challenge] About to create challenge instance:", {
+      templateId,
+      userId: session.user.id,
+      variant,
+      themeKey: template.themeKey,
+    });
     const instance = await createChallengeInstance(
       {
         templateId,
@@ -117,6 +129,7 @@ export async function POST(request: NextRequest) {
       },
       template.name
     );
+    console.log("[Join Challenge] ✅ Challenge instance created:", instance.id);
 
     return NextResponse.json({
       ok: true,

@@ -1,10 +1,13 @@
 import { getServerAuthSession } from "@/auth";
 import { ChallengeBackground } from "@/components/challenge-background";
+import { CalendarPreview } from "@/components/calendar-preview";
 import { SignInButton } from "@/components/sign-in-button";
 import { redirect } from "@/i18n/routing";
 import { listChallengeInstances } from "@/lib/challenge-instances";
-import { themes } from "@/theme/themes";
+import { getCurrentMonthChallenge } from "@/lib/challenge-templates";
+import { resolveTheme, themes } from "@/theme/themes";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { NewUserOnboardingClient } from "./new-user-onboarding-client";
 
 // Force dynamic rendering to prevent PWA caching issues
 export const dynamic = "force-dynamic";
@@ -88,6 +91,34 @@ export default async function Home({
     redirect({ href: `/challenges/${sortedInstances[0]?.id}`, locale });
   }
 
-  // User has no active challenge - redirect to challenges browse page
-  redirect({ href: "/challenges", locale });
+  // User has no active challenge - show onboarding with current month's calendar
+  const currentChallenge = await getCurrentMonthChallenge();
+
+  if (!currentChallenge) {
+    // No current month challenge - redirect to challenges browse page
+    redirect({ href: "/challenges", locale });
+    return; // TypeScript needs this for type narrowing
+  }
+
+  // Show onboarding page with calendar preview and modal
+  const { tokens } = resolveTheme(currentChallenge.themeKey);
+
+  return (
+    <>
+      <ChallengeBackground
+        backgroundImageDesktop={tokens.backgroundImageDesktop}
+        backgroundImageMobile={tokens.backgroundImageMobile}
+      />
+      <div className="relative z-10 flex flex-1 flex-col">
+        <div className="mx-auto flex max-w-5xl flex-1 flex-col items-center justify-center gap-6 px-4 py-16">
+          {/* Calendar preview in background */}
+          <div className="w-full max-w-3xl">
+            <CalendarPreview template={currentChallenge} />
+          </div>
+        </div>
+      </div>
+      {/* Onboarding modal */}
+      <NewUserOnboardingClient template={currentChallenge} themeTokens={tokens} locale={locale} />
+    </>
+  );
 }

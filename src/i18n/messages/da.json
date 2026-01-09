@@ -314,5 +314,17 @@
     "selectDistance": "Vælg din udfordringsafstand:",
     "joinJanuary": "Tilslut januar-udfordring",
     "maybeLater": "Måske senere"
+  },
+  "onboarding": {
+    "title": "Velkommen til CalendRun!",
+    "description": "Kom i gang ved at deltage i den nuværende måneds udfordring. Vælg dit udfordringsniveau og eventuelt deltag i en klub.",
+    "selectVariant": "Vælg dit udfordringsniveau",
+    "clubTokenLabel": "Klubinvitationstoken",
+    "clubTokenPlaceholder": "Indtast klubtoken (valgfrit)",
+    "clubTokenHelp": "Hvis du har et klubinvitationstoken, indtast det her for at deltage i klubben, når du deltager i udfordringen.",
+    "joinButton": "Deltag i Udfordring",
+    "joining": "Tilmelder...",
+    "joinError": "Kunne ikke deltage i udfordring. Prøv venligst igen.",
+    "selectVariantError": "Vælg venligst et udfordringsniveau"
   }
 }

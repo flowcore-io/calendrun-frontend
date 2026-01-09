@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "@/auth";
 import { ChallengeBackground } from "@/components/challenge-background";
 import { ChallengeCalendarWrapper } from "@/components/challenge-calendar-wrapper";
+import { ChallengeInstanceRetry } from "@/components/challenge-instance-retry";
 import { ChallengeProgress } from "@/components/challenge-progress";
 import { ChallengeProgressProvider } from "@/components/challenge-progress-context";
 import { ChallengeStateProvider } from "@/components/challenge-state-context";
@@ -23,10 +24,13 @@ export const dynamic = "force-dynamic";
 
 export default async function ChallengeCalendarPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; locale: string }>;
+  searchParams: Promise<{ new?: string }>;
 }) {
   const { id, locale } = await params;
+  const { new: isNew } = await searchParams;
   setRequestLocale(locale);
 
   // Force dynamic rendering to prevent PWA caching issues
@@ -52,7 +56,24 @@ export default async function ChallengeCalendarPage({
       instanceFound: !!instance,
       instanceUserId: instance?.userId,
       sessionUserId: session.user.id,
+      isNewChallenge: isNew === "true",
     });
+    
+    // If this is a newly created challenge, show retry component instead of 404
+    if (isNew === "true") {
+      return (
+        <ChallengeInstanceRetry instanceId={id}>
+          <div className="flex min-h-screen items-center justify-center">
+            <div className="text-center">
+              <p className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
+                Challenge not ready yet...
+              </p>
+            </div>
+          </div>
+        </ChallengeInstanceRetry>
+      );
+    }
+    
     notFound();
   }
 
@@ -300,7 +321,7 @@ export default async function ChallengeCalendarPage({
   });
 
   return (
-    <>
+    <ChallengeInstanceRetry instanceId={id}>
       {/* PWA redirect handler for cached scenarios */}
       <PWARedirectHandler currentThemeKey={instance.themeKey} />
 
@@ -392,6 +413,6 @@ export default async function ChallengeCalendarPage({
           </ChallengeProgressProvider>
         </main>
       </JanuaryPromotionWrapper>
-    </>
+    </ChallengeInstanceRetry>
   );
 }

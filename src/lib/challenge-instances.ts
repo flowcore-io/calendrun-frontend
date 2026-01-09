@@ -54,8 +54,8 @@ export async function listChallengeInstances(filters?: {
   templateId?: string;
   status?: "active" | "completed";
 }): Promise<ChallengeInstance[]> {
-  if (filters?.templateId) {
-    // Use templateId endpoint
+  // If only templateId is provided (no userId), fetch all instances for that template
+  if (filters?.templateId && !filters?.userId) {
     const instances = await backendClient.get<Record<string, unknown>[]>(
       "/api/challenges/instances",
       { templateId: filters.templateId }
@@ -67,12 +67,18 @@ export async function listChallengeInstances(filters?: {
     throw new Error("userId or templateId filter is required");
   }
 
+  // Fetch instances for the user
   const instances = await backendClient.get<Record<string, unknown>[]>(
     "/api/challenges/instances",
     { userId: filters.userId }
   );
 
   let result = Array.isArray(instances) ? instances.map(apiToInstance) : [];
+
+  // Filter by templateId if provided (client-side filter since we fetched by userId)
+  if (filters?.templateId) {
+    result = result.filter((instance) => instance.templateId === filters.templateId);
+  }
 
   // Filter by status if needed (backend doesn't support status filter yet)
   if (filters?.status) {
@@ -165,7 +171,16 @@ export async function createChallengeInstance(
   const id = generateId();
   const now = new Date().toISOString();
 
+  console.log("[createChallengeInstance] Creating new instance:", {
+    id,
+    templateId: instance.templateId,
+    userId: instance.userId,
+    variant: instance.variant,
+    themeKey: instance.themeKey,
+  });
+
   // Emit event to Flowcore
+  console.log("[createChallengeInstance] Emitting challenge.started.0 event...");
   await emitEvent("challenge.0", "challenge.started.0", {
     id,
     templateId: instance.templateId,
@@ -175,6 +190,7 @@ export async function createChallengeInstance(
     status: instance.status,
     joinedAt: now,
   });
+  console.log("[createChallengeInstance] ✅ Event emitted successfully");
 
   // Return the instance with generated ID (backend will process the event)
   return {
