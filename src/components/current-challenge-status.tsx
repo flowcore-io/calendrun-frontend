@@ -5,7 +5,6 @@ import type { ChallengeTemplate } from "@/lib/challenge-templates";
 import { formatLocaleDate } from "@/lib/date-utils";
 import { resolveTheme } from "@/theme/themes";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
 
 type CurrentChallengeStatusProps = {
   challenge: ChallengeTemplate;
@@ -13,15 +12,12 @@ type CurrentChallengeStatusProps = {
 
 export function CurrentChallengeStatus({ challenge }: CurrentChallengeStatusProps) {
   const locale = useLocale();
-  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("everybody");
   const tCommon = useTranslations("common");
   const tNames = useTranslations("challengeNames");
 
   // Ensure dates are only rendered on client to avoid hydration mismatch
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = typeof window !== "undefined";
 
   const { tokens } = resolveTheme(challenge.themeKey);
   const startDate = new Date(challenge.startDate);

@@ -13,7 +13,7 @@ import {
 import type { ThemeTokens } from "@/theme/themes";
 import { useMutation } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type ChallengeJoinCardProps = {
   template: ChallengeTemplate;
@@ -62,15 +62,12 @@ export function ChallengeJoinCard({
   const router = useRouter();
   const locale = useLocale();
   const [joinError, setJoinError] = useState<string | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("challenges");
   const tNames = useTranslations("challengeNames");
   const tCommon = useTranslations("common");
 
   // Ensure dates are only rendered on client to avoid hydration mismatch
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isMounted = typeof window !== "undefined";
 
   const joinMutation = useMutation({
     mutationFn: ({ variant }: { variant: Variant }) => joinChallenge(template.id, variant),

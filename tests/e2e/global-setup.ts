@@ -3,7 +3,7 @@ import { FullConfig } from "@playwright/test";
 /**
  * Global setup to verify dev environment before tests run
  */
-async function globalSetup(config: FullConfig) {
+async function globalSetup(config: FullConfig) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const backendUrl = process.env.E2E_BACKEND_URL || "http://localhost:18765";
 
   console.log("🔍 Verifying dev environment...");
@@ -25,10 +25,10 @@ async function globalSetup(config: FullConfig) {
   // Verify backend is in dev mode (optional check)
   try {
     const response = await fetch(`${backendUrl}/health`);
-    const data = await response.json();
+    await response.json();
     // Backend could expose dev mode status in health endpoint
     // For now, we'll just verify it's accessible
-  } catch (error) {
+  } catch {
     // Non-critical, continue
   }
 

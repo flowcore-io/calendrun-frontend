@@ -9,9 +9,6 @@ test.describe("Full Stack E2E Tests", () => {
   test("should complete full user flow: authenticate, view challenges, log run", async ({
     page,
   }) => {
-    const timestamp = Date.now();
-    const uniqueId = `test-${timestamp}`;
-
     // 1. Navigate to dashboard
     await page.goto("/dashboard");
     await expect(page.locator("h1")).toContainText("Dashboard");
