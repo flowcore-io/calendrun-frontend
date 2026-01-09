@@ -28,8 +28,10 @@ Next.js 16 frontend application for CalendRun, deployed to Vercel.
    ```
 
 2. **Set up environment variables:**
-   - Copy `env.example` to `.env.local`
-   - Fill in all required values (see Environment Variables section below)
+   - Copy `env.development.local.example` to `.env.development.local`
+   - Fill in your personal values (secrets, Keycloak credentials, etc.)
+   - Team defaults are already in `.env.development` (committed)
+   - **Note**: `.env.development.local` takes precedence over `.env.development`
 
 3. **Start development server:**
    ```bash
@@ -46,6 +48,17 @@ See `env.example` for all required environment variables:
 - **Keycloak**: `KEYCLOAK_ISSUER`, `KEYCLOAK_CLIENT_ID`, `KEYCLOAK_CLIENT_SECRET`
 - **Flowcore**: `FLOWCORE_INGESTION_BASE_URL`, `FLOWCORE_TENANT`, `FLOWCORE_DATA_CORE_ID`, `FLOWCORE_API_KEY`
 - **Backend API**: `NEXT_PUBLIC_BACKEND_API_URL`, `BACKEND_API_KEY` (optional)
+- **Dev Mode**: `NEXT_PUBLIC_DEV_MODE` (optional, set to "true" for dev environment)
+
+### Dev Mode Configuration
+
+When running in dev mode:
+- Set `NEXT_PUBLIC_DEV_MODE=true` to enable dev mode UI indicators and use dev datacore
+- Set `NEXT_PUBLIC_BACKEND_API_URL=http://localhost:18765` to point to local backend
+- Set `FLOWCORE_DATA_CORE_ID` to the dev datacore ID (from `bun run dev:flowcore:setup` in backend)
+- **Important**: In dev mode, set `FLOWCORE_DATA_CORE_ID` to the dev datacore ID (e.g., `a19e4471-7813-4d6b-bec3-676ab8f219c6`)
+
+**Note**: Next.js automatically loads `.env.development` when `NODE_ENV=development`, so you can use `.env.development` instead of `.env.local` for dev-specific configuration.
 
 ## Scripts
 
@@ -59,6 +72,14 @@ See `env.example` for all required environment variables:
 - `yarn test:e2e` - Run Playwright E2E tests
 - `yarn test:e2e:ui` - Run Playwright tests with UI
 - `yarn test:e2e:report` - Show Playwright test report
+
+### Dev/Test Environment Scripts
+
+- `yarn dev:frontend` - Start frontend pointing to dev backend
+- `yarn test:e2e:dev` - Run E2E tests against dev environment
+- `yarn dev:test:setup` - Verify dev environment is ready
+
+See the [CalendRun Dev/Test Environment Setup Guide](https://usable.dev/fragments) in Usable for detailed documentation.
 
 ## Deployment
 

@@ -12,14 +12,19 @@ export const env = createEnv({
     // Flowcore configuration
     FLOWCORE_INGESTION_BASE_URL: z.string().url().default("https://webhook.api.flowcore.io"),
     FLOWCORE_TENANT: z.string().default("flowcore-saas"),
+    // In dev mode, set FLOWCORE_DATA_CORE_ID to the dev datacore ID (e.g., from bun run dev:flowcore:setup)
     FLOWCORE_DATA_CORE_ID: z.string().min(1),
     FLOWCORE_API_KEY: z.string().min(1),
     // Backend API key for frontend-backend communication
     BACKEND_API_KEY: z.string().optional(),
   },
   client: {
-    NEXT_PUBLIC_APP_ENV: z.enum(["development", "test", "staging", "production"]).optional(),
     NEXT_PUBLIC_BACKEND_API_URL: z.string().url(),
+    NEXT_PUBLIC_DEV_MODE: z
+      .string()
+      .default("false")
+      .transform((val) => val === "true")
+      .optional(),
   },
   runtimeEnv: {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
@@ -32,7 +37,7 @@ export const env = createEnv({
     FLOWCORE_DATA_CORE_ID: process.env.FLOWCORE_DATA_CORE_ID,
     FLOWCORE_API_KEY: process.env.FLOWCORE_API_KEY,
     BACKEND_API_KEY: process.env.BACKEND_API_KEY,
-    NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_BACKEND_API_URL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
+    NEXT_PUBLIC_DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE,
   },
 });
