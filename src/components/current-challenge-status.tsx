@@ -2,17 +2,26 @@
 
 import { Link } from "@/i18n/routing";
 import type { ChallengeTemplate } from "@/lib/challenge-templates";
+import { formatLocaleDate } from "@/lib/date-utils";
 import { resolveTheme } from "@/theme/themes";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
 
 type CurrentChallengeStatusProps = {
   challenge: ChallengeTemplate;
 };
 
 export function CurrentChallengeStatus({ challenge }: CurrentChallengeStatusProps) {
+  const locale = useLocale();
+  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("everybody");
   const tCommon = useTranslations("common");
   const tNames = useTranslations("challengeNames");
+
+  // Ensure dates are only rendered on client to avoid hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { tokens } = resolveTheme(challenge.themeKey);
   const startDate = new Date(challenge.startDate);
@@ -78,7 +87,9 @@ export function CurrentChallengeStatus({ challenge }: CurrentChallengeStatusProp
 
         {/* Date range */}
         <div className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
-          {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}
+          {isMounted
+            ? `${formatLocaleDate(startDate, locale)} - ${formatLocaleDate(endDate, locale)}`
+            : `${startDate.toISOString().split("T")[0]} - ${endDate.toISOString().split("T")[0]}`}
         </div>
       </div>
     </div>

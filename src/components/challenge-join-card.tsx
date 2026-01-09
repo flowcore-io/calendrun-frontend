@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/routing";
 import type { ChallengeTemplate } from "@/lib/challenge-templates";
+import { formatLocaleDate } from "@/lib/date-utils";
 import {
   type Variant,
   getVariantDisplayNameCompact,
@@ -12,7 +13,7 @@ import {
 import type { ThemeTokens } from "@/theme/themes";
 import { useMutation } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type ChallengeJoinCardProps = {
   template: ChallengeTemplate;
@@ -61,9 +62,15 @@ export function ChallengeJoinCard({
   const router = useRouter();
   const locale = useLocale();
   const [joinError, setJoinError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("challenges");
   const tNames = useTranslations("challengeNames");
   const tCommon = useTranslations("common");
+
+  // Ensure dates are only rendered on client to avoid hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const joinMutation = useMutation({
     mutationFn: ({ variant }: { variant: Variant }) => joinChallenge(template.id, variant),
@@ -136,7 +143,9 @@ export function ChallengeJoinCard({
         {/* Date range */}
         <div className="mb-4 space-y-1 text-xs text-zinc-500 dark:text-zinc-500">
           <div>
-            {startDate.toLocaleDateString(locale)} - {endDate.toLocaleDateString(locale)}
+            {isMounted
+              ? `${formatLocaleDate(startDate, locale)} - ${formatLocaleDate(endDate, locale)}`
+              : `${startDate.toISOString().split("T")[0]} - ${endDate.toISOString().split("T")[0]}`}
           </div>
           <div>
             {template.days} {tCommon("days")}
